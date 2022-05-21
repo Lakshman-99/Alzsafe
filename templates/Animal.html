@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>AnimalSearch</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="container" style="width:400px;margin-top:150px;">
+  <h2>ANIMAL SEARCH</h2>
+
+    <div class="form-group">
+      <label>Animal 1 :</label>
+      <input id="Q1" type="text" class="form-control" >
+    </div>
+
+      <div class="form-group">
+      <label>Animal 2:</label>
+      <input id="Q2" type="text" class="form-control" >
+    </div>
+
+      <div class="form-group">
+      <label >Animal 3:</label>
+      <input type="text" id="Q3" class="form-control" >
+    </div>
+
+      <div class="form-group">
+      <label >Animal 4:</label>
+      <input type="text" id="Q4" class="form-control" >
+    </div>
+
+      <div class="form-group">
+      <label>Animal 5:</label>
+      <input type="text" id="Q5" class="form-control" >
+    </div>
+    <button onclick="myFunction()">Submit</button>
+
+
+</div>
+
+</body>
+<script>
+
+function myFunction(){
+
+$.ajax({
+  type: "POST",
+  url: "/Animal",
+  data: {"data" : $("#Q1").val()+" "+$("#Q2").val()+" "+$("#Q3").val()+" "+$("#Q4").val()+" "+$("#Q5").val()} ,
+  success: function(data) {
+            alert(data);
+      }
+});
+}
+</script>
+</html>

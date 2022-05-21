@@ -1,0 +1,348 @@
+@import url("https://fonts.googleapis.com/css?family=Oswald");
+
+/* #212222; */
+:root {
+  --background: #E9CFD0;
+  --chat: #FFFFFF;
+  --navbar: #101130;
+  --text: #FFF;
+  --highlight: #dc3545;
+}
+*{
+  transition: 0.5s background ease;
+}
+
+html{
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background: var(--background);
+  overflow: hidden;
+  transition: 0.5s background ease;
+}
+
+ul {
+  display: flex;
+  list-style-type: none;
+}
+ul a {
+  margin: 10px 30px;
+  position: relative;
+  color: var(--text);
+  font-family: "Oswald", sans-serif;
+  font-size: 20px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+ul a:before {
+  position: absolute;
+  bottom: 5px;
+  content: "";
+  width: 73%;
+  height: 3px;
+  background: var(--highlight);
+  transform: translateX(-100%);
+  opacity: 0;
+}
+ul a:hover:before {
+  opacity: 1;
+  transition: 0.5s transform ease, 0.8s opacity ease;
+  transform: translateX(0);
+}
+ul .active {
+  color: var(--highlight);
+}
+ul .active:hover:before {
+  opacity: 0;
+}
+
+.navbar-dark .navbar-toggler{
+  border-color: none;
+}
+
+#nvcolor{
+  color: var(--text);
+}
+
+@media only screen and (min-width: 1100px){
+  .navbar{
+    padding-inline: 120px;
+  }
+  .navmen{
+    padding-left: 90px;
+  }
+}
+
+@media only screen and (max-width: 650px){
+  .navbar-brand{
+    padding-left: 40px;
+  }
+  ul a:before {
+    width: 15%;
+  }
+}
+
+/* dark/light mode */
+
+.dark {
+  --background: linear-gradient(to bottom, #654ea3, #eaafc8);
+  --navbar: red;
+  --text: #000;
+  --highlight: blue;
+}
+
+.element {
+  position: relative;
+}
+
+input[type=checkbox].toggle-switch {
+  transform: rotate(90deg);
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  outline: 0;
+  cursor: pointer;
+  /* width of the track */
+  width: 4em;
+  /* height of the track */
+  height: 1.5em;
+  border-radius: 3em;
+  background: linear-gradient(to right, #000428, #004e92);
+  transition: background-color 0.09s ease-in-out;
+  position: relative;
+}
+input[type=checkbox].toggle-switch:active::after {
+  background-color: #eaafc8;
+  padding-right: 0.8em;
+}
+input[type=checkbox].toggle-switch::after {
+  content: "";
+  /* toggle shape --
+  height should equal width
+  to maintain circle */
+  width: 2em;
+  height: 2em;
+  background-color: #000428;
+  border-radius: 3em;
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+  box-shadow: 2px 0px 5px 0 rgba(0, 0, 0, 0.15);
+}
+
+input[type=checkbox].toggle-switch:checked {
+  background: linear-gradient(to right, #654ea3, #eaafc8);
+}
+input[type=checkbox].toggle-switch:checked:active::after {
+  margin-left: -0.8em;
+}
+input[type=checkbox].toggle-switch:checked::after {
+  left: 2em;
+  background-color: #eaafc8;
+}
+
+.opts {
+  color: gray;
+}
+
+.opt-1 {
+  color: white;
+}
+
+.opt-1,
+.opt-2 {
+  transition: 0.2s all;
+}
+
+.active .opt-1 {
+  color: gray;
+}
+.active .opt-2 {
+  color: white;
+}
+
+/* end of theme */
+
+label {
+    line-height: 80px;
+    font-size: 30px;
+    color: var(--text);
+    font-weight: 200;
+    cursor: pointer;
+}
+
+nav .menu-bar {
+    display: none;
+}
+
+.side-menu {
+    position: fixed;
+    background: var(--navbar);
+    width: 225px;
+    height: 100%;
+    padding-top: 30px;
+    z-index: 10;
+}
+
+.side-menu a {
+    display: flex;
+    line-height: 45px;
+    transition: 0.5s;
+    position: relative;
+    color: var(--text);
+    font-size: 20px;
+    text-decoration: none;
+    padding-left: 28px;
+}
+
+.side-menu a:before{
+  position: absolute;
+  bottom: 5px;
+  content: "";
+  width: 35%;
+  height: 3px;
+  background: var(--highlight);
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.side-menu a:hover:before {
+  opacity: 1;
+  transition: 0.5s transform ease, 0.8s opacity ease;
+  transform: translateX(0);
+}
+
+.side-menu span {
+    font-size: 20px;
+    margin-left: 10px;
+    color: var(--text);
+}
+
+.side-menu i {
+    font-size: 20px;
+    margin-left: 20px;
+    color: var(--text);
+}
+
+#menu {
+    display: none;
+}
+
+@media (max-width:1350px) {
+    .side-menu a span {
+        display: none;
+    }
+
+    .side-menu center {
+        display: none;
+    }
+
+    .side-menu {
+        width: 100px;
+    }
+
+    .side-menu a i {
+        display: block;
+        line-height: 80px;
+        text-align: center;
+        margin-left: 0;
+        font-size: 35px;
+    }
+
+    .data {
+        margin-left: 100px;
+    }
+}
+
+@media (max-width:750px) {
+    .data {
+        display: none;
+    }
+
+    .side-menu {
+        width: 65%;
+        text-align: center;
+        right: 100%;
+        background-color: var(--navbar);
+        transition: all 0.5s;
+    }
+
+    .side-menu a i {
+        display: none;
+    }
+
+    .side-menu a span {
+        display: block;
+    }
+
+    nav .menu-bar {
+        display: block;
+    }
+}
+
+#menu:checked~.side-menu {
+    right: 35%;
+    z-index: 10;
+}
+
+.QandA{
+  height: 100vh;
+}
+
+.chat {
+  background-color: var(--chat);
+  height: 100vh;
+}
+
+body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+background-color: #555;
+color: white;
+border: none;
+cursor: pointer;
+opacity: 0.8;
+}
+
+/* The popup form - hidden by default */
+.form-popup {
+display: none;
+z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+max-width: 300px;
+padding: 10px;
+color: var(--text);
+background-color: white;
+}
+
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+background-color: #04AA6D;
+color: white;
+padding: 16px 20px;
+border: none;
+cursor: pointer;
+width: 100%;
+margin-bottom:10px;
+opacity: 0.8;
+}
+
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+background-color: red;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+opacity: 1;
+}

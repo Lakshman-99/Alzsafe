@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Alzsafe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/7.0.1-1/tachyons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<style type="text/css">
+	body{display:block; }
+
+	.messageBox{
+		position:fixed; left:1px;
+		width:318px; height:318px;
+		display:block; z-index:3;
+		background:rgba(250,250,250, .6);
+		top:2px; font-size: 30px;
+		text-align:center;
+	}
+	.messageBox span{
+		position:relative; display:block;
+		top: 50%; left: 0%;
+	}
+	.messageBox span b{
+		display:block; color:red;
+		font-family:"Courier New";
+		font-size:16px;
+		font-weight:normal;
+	}
+	.messageBox span button{
+		display:block; position:relative;
+		width:200px; border-radius:10px;
+		border:1px solid maroon;
+		background: none; color: maroon;
+		left:calc(50% - 100px);
+	}
+	.messageBox span button:active{
+		background:white;
+	}
+
+	.sudoku{
+		position:fixed; left:1px;
+		width:314px; height:314px;
+		border:2px solid skyblue;
+		background-color:silver;
+		z-index:2; top: 2px;
+	}
+	.sudoku4{ border-width: 2px; }
+	.sudoku *{ box-sizing:border-box; }
+	.sudoku .row{
+		display:block; width:100%;
+		position:relative;
+		border-bottom: 1px solid black;
+	}
+	.sudoku .row .cell, .numbers .cell{
+		display:block; font-size:20px;
+		position:absolute; top:0px;
+		height:100%; text-align:center;
+		line-height:34px;
+		border-right:1px solid black;
+	}
+	.sudoku4 .row .cell{
+		font-size:33px; line-height:78px;
+	}
+	.sudoku .row .cell:last-of-type, .numbers .cell:last-of-type{ border:none;}
+	.sudoku9 .row:nth-of-type(3), .sudoku9 .row:nth-of-type(6), .sudoku9 .row .cell:nth-of-type(3), .sudoku9 .row .cell:nth-of-type(6){
+		border-width:2px;
+	}
+	.sudoku4 .row:nth-of-type(2), .sudoku4 .row .cell:nth-of-type(2){
+		border-width:3px;
+	}
+	.sudoku .row:last-of-type, .sudoku .row .cell:last-of-type{ border:none; }
+	.sudoku .row:not(:last-of-type) .cell:not(:last-of-type):after{
+		content:" ";background:silver;
+		position:absolute; padding:4px;
+		top: calc(100% - 2px); z-index:2;
+		left: calc(100% - 2px);
+		border-radius:100%;
+	}
+	.sudoku4 .row:not(:last-of-type) .cell:not(:last-of-type):after{
+		padding: 8px;
+		top: calc(100% - 6px);
+		left: calc(100% - 6px);
+	}
+	.sudoku9 .row .cell:nth-of-type(3):after, .sudoku9 .row .cell:nth-of-type(6):after, .sudoku9 .row:nth-of-type(3) .cell:after, .sudoku9 .row:nth-of-type(6) .cell:after{    display:none;    }
+	.sudoku4 .row .cell:nth-of-type(2):after, .sudoku4 .row:nth-of-type(2) .cell:after{    display:none;    }
+
+	.numbers{
+		height:35px; border-radius:10px;
+		background: lightskyblue;
+		border:1px solid black; left:1px;
+		box-sizing:border-box; top:275px;
+		position:fixed; width:318px;
+	}
+
+	button{
+		position:fixed; bottom:0px; width:100%; padding:3vmin 0px; box-sizing:border-box; background:grey; color:#fff; left:0px; font-size: 24px; outline: none; display:block;
+	}
+	button:active{ background: #444; }
+	button:active, button:hover{
+		outline:none;
+	}
+
+	.buttons{
+		position:fixed; width:100%; left:0px; bottom:1px; height: 50px; display:block; font-size: 16px; text-align:center; box-sizing:border-box; background:white;
+	}
+	.buttons .extra{
+		position:absolute; left:0px; height:100%; width:100%; display:block; z-index:1; bottom:-100%; border: 1px solid #ccc; text-align:center; overflow:hidden; box-sizing:border-box; border-bottom:none; background:rgba(50, 50, 50, 0.3); transition:all 0.2s ease;
+	}
+	.buttons .extra .text{
+		max-width: 55%; text-align:left; display:block; padding:5px; margin-top:10px;
+	}
+	.buttons .extra .button{
+		position:absolute; right: 0px; height:100%; background:#aaa; display:block; top: 0px; width: 22%; max-width:100px; line-height:300%;
+	}
+	.buttons .extra .button2{
+		right: 22%; border-right:1px solid #ccc;
+	}
+	.buttons > .left, .buttons > .right, .buttons .big{
+		position:absolute; width:calc(50% - 1px); left: 0%; bottom: 0px; display:block; height:100%; background: #3399cc; font-size:0.8em; z-index:2; border-radius:15px; transition:all 0.2s linear;
+box-shadow:none;
+	}
+	.buttons .right{left:50%; width:50%;}
+	.buttons > .right.other, .buttons > left.other{
+		box-shadow:inset 0px -10px 10px 10px rgba(250, 250, 250, .3);
+	}
+	.right > span, .left > span{
+		font-size: 1.8em; display:block;
+		font-family:"Courier New";
+		color:#fff;
+	}
+	.left:active, .right:active{
+		background:#336699;
+	}
+	.buttons .big{
+		width: 100%; z-index:3; font-size:1.5em; line-height:200%; bottom:-100%; color:white; transition:all 0.2s ease; border-radius:0px; background:#6699cc;
+	}
+	.buttons .left.other{
+		border-right:1px solid #aaa;}
+	.buttons .other{
+		bottom: 0%; border-radius:0px;}
+</style>
+</head>
+<body>
+	<div class="messageBox">
+		<span>Loading</span>
+	</div>
+
+	<div class="sudoku 9">
+	</div>
+	<div class="numbers"></div>
+
+	<!--button>Reload</button-->
+	<div class="buttons">
+		<span class="extra">
+			<span class="text">Select Mode</span>
+			<span class="button button1">4 * 4</span><span class="button button2">9 * 9</span>
+		</span>
+
+		<span class="left"><span>Cheat</span>ENGINE</span><span class="right"><span>Play</span>GAME</span>
+
+		<span class="big">Submit</span>
+	</div>
+</body>
+<script src="{{url_for('static',filename='jquery3.2.1.min.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='sudoku.js')}}"></script>
+</html>

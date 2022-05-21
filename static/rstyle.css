@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+ background-color: black;
+  margin: 3% 0;
+  font-family: Arial;
+  font-size: 25px;
+  font-family: 'Nunito', sans-serif;
+}
+
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  filter: blur(5px);
+}
+.blogsection
+{
+margin-top: 2%;
+}
+
+.blog{
+
+box-shadow: 3px 3px 2px 3px rgba(0, 0, 0, 0.10);
+border-radius: 20px;
+background-color: rgba(0, 0, 0, 0.3);
+height: 75%;
+
+}
+
+.blog-body{
+  color: white;
+margin-top: 1.5%;
+width: 100%;
+padding:3%;
+}
+
+.blog-header{
+  background-color:	#2C2F33;
+  border-radius: 20px 20px 0 0 ;
+  color: white;
+  padding:3%;
+  padding-bottom: 1%;
+}
+.play{
+  width: 100%;
+  height: 70px;
+  position: fixed;
+  right:0 ;
+  bottom: 0;
+}
+
+#but{
+  position: absolute;
+  right:7%;
+}
+hr{
+  margin: 3% 0;
+}
+.Contact-me
+{
+  position: absolute;
+  right: 7%;
+}
+.contact-input
+{
+  background-color:	rgba(0, 0, 0, .2);
+  color: white;
+}
+::placeholder {
+  color: white;
+  opacity: 10;
+  font-weight: bold;
+}
+
+.c-item{
+padding: 3% 15%;
+margin: 0 auto;;
+}
+
+
+#questionmargin{
+  margin:5% 0;
+}
+
+.buttonQuestion
+{
+  margin: 0 10%:
+}
+
+#background{
+  background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+  background-repeat: repeat-x;
+  position: fixed;
+right: 0;
+bottom: 0;
+min-width: 100%;
+min-height: 100%;
+}

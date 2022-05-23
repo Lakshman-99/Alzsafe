@@ -87,9 +87,9 @@ ul .active:hover:before {
 /* dark/light mode */
 
 .dark {
-  --background: linear-gradient(to bottom, #654ea3, #eaafc8);
-  --navbar: red;
-  --text: #000;
+  --background: #F6EAEA;
+  --navbar: #112B3C;
+  --text: #FFF;
   --highlight: blue;
 }
 

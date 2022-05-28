@@ -12,10 +12,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+    <style>
+    html {
+      font-family: sans-serif;
+    }
+
+    table {
+      border-collapse: collapse;
+      border: 2px solid rgb(200,200,200);
+      letter-spacing: 1px;
+      font-size: 1.1rem;
+    }
+
+    td, th {
+      border: 1px solid rgb(190,190,190);
+      padding: 12px 25px;
+    }
+
+    td {
+      text-align: center;
+    }
+
+    caption {
+      padding: 10px;
+    }
+    </style>
   </head>
-  <body>
-
-
+  <body style="background-color:#b5ffd9;">
     <nav class="navbar  navbar-expand-lg navbar-dark">
         <a class="navbar-brand mk" href="/"><img src="{{url_for('static',filename='logo.png')}}"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,35 +54,45 @@
         </div>
       </nav>
 
-      <div class="row">
-        <div class="col-2" id="rem">
-        </div>
-          <div class="QandA col-6">
-              <h1>Post your thoughts here</h1>
-              {{ text }}
-              {{ pageno }}
-            <button id="but" class="open-button" onclick="openForm()">Open Form</button>
+    <h5 style="margin-top:3%;margin-left:3%;" >Name : {{patient.name
+      }} </h5>
+    <center><h1 style="margin-top:4%;" >Care Taker</h1></center>
+  <br>
+    <form action="/submitPatient/{{patient._id}}" method="post">
+    <table style="margin: 0 auto;">
+      <tr>
+        <td>&nbsp;</td>
+        <th>Medications</th>
+        <th>Dosage</th>
+        <th>Time</th>
+      </tr>
+      <tr>
+        <th>Morning</th>
+        <td><input type="text" name="MM" value="" ></td>
+        <td><input type="text" name="MD" value="" ></td>
+        <td><input type="text" name="MT" value="" ></td>
+      </tr>
+      <tr>
+        <th>Afternoon</th>
+        <td><input type="text" name="AM" value=""  ></td>
+        <td><input type="text" name="AD" value=""  ></td>
+        <td><input type="text" name="AT" value=""  ></td>
+      </tr>
+      <tr>
+        <th>Night</th>
+        <td><input type="text" name="NM" value="" ></td>
+        <td><input type="text" name="ND" value=""  ></td>
+        <td><input type="text" name="NT" value=""  ></td>
+      </tr>
+    </table>
+    <br>
+<br>
 
-            <div class="form-popup" id="myForm">
-              <form  action="/forumins" class="form-container" method="POST" id="usrform">
-                <label for="" style="color: black;">Title: </label>
-                <input type="text" name="title" value="" placeholder="..." required>
-                <label for="" style="color: black;">Body: </label>
-                <textarea rows="4" cols="32" name="comment" form="usrform" style="resize:none;" placeholder="Enter text here..." required></textarea><br>
-                <button type="submit" class="btn">Submit</button>
-                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-              </form>
-            </div>
+<center>
 
-          {% for i in query %}
-              <div >
-                  {{ i }}
-              </div>
-                <br>
-          {% endfor %}
+    <button type="submit" class="btn btn-dark">Submit the details</button>
 
-          </div>
-
-
+</center>
+</form>
   </body>
 </html>

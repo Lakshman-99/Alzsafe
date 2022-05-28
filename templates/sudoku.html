@@ -45,7 +45,7 @@
 	}
 
 	.sudoku{
-		position:fixed; left:1px;
+		position:relative; left:1px;
 		width:314px; height:314px;
 		border:2px solid skyblue;
 		background-color:silver;
@@ -95,8 +95,8 @@
 		height:35px; border-radius:10px;
 		background: lightskyblue;
 		border:1px solid black; left:1px;
-		box-sizing:border-box; top:275px;
-		position:fixed; width:318px;
+		box-sizing:border-box; top:-30px;
+		position:relative; width:318px;
 	}
 
 	button{
@@ -148,6 +148,23 @@ box-shadow:none;
 </style>
 </head>
 <body>
+
+
+  <nav class="navbar  navbar-expand-lg navbar-dark">
+      <a class="navbar-brand mk" href="/"><img src="{{url_for('static',filename='logo.png')}}"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item">
+            <a class="nav-link"style="color: black;" href="/">Home</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
 	<div class="messageBox">
 		<span>Loading</span>
 	</div>
@@ -165,9 +182,30 @@ box-shadow:none;
 
 		<span class="left"><span>Cheat</span>ENGINE</span><span class="right"><span>Play</span>GAME</span>
 
-		<span class="big">Submit</span>
+		<span class="big" onclick="func()">Submit</span>
 	</div>
 </body>
 <script src="{{url_for('static',filename='jquery3.2.1.min.js')}}"></script>
 <script type="text/javascript" src="{{url_for('static',filename='sudoku.js')}}"></script>
+<script type="text/javascript">
+
+      var ans1 = prompt("your first word ?");
+      var ans2 = prompt("Your second word ?");
+      if('{{session.w1}}'===ans1 && '{{session.w2}}'===ans2)
+      {
+          alert("whoa !! all right");
+      }
+      else if('{{session.w1}}'===ans1 || '{{session.w2}}'===ans2)
+      {
+          alert("oops !! you got one wrong !!");
+      }
+      else {
+        alert("oops !! you got all wrong !!");
+      }
+
+    function func(){
+      window.location.href="/final";
+    }
+
+</script>
 </html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Alzsafe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tachyons/7.0.1-1/tachyons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  </head>
+  <body>
+  <input type="checkbox" id="menu">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--navbar);">
+    <label for="menu" class="menu-bar"> <i>𝅘𝅥𝅘𝅥𝅯</i></label>
+    <a class="navbar-brand" href="#">Alzsafe</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto navmen">
+        <li class="nav-item active">
+          <a class="nav-link" id="nvcolor" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        {% if session.role == None %}
+        <li class="nav-item">
+          <a class="nav-link" id="nvcolor" href="/login">Login</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" id="nvcolor" href="/logout">Logout</a>
+        </li>
+        {% endif %}
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="nvcolor" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Theme
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: var(--navbar);">
+          <div class="flex items-center">
+           <div class="element flex flex-wrap items-center" style="font-size: 0.85rem;">
+              <div class="checkbox-wrap ">
+                 <input type="checkbox" class="toggle-switch">
+              </div>
+              <div class="opts">
+                 <div class="opt-1"><p>dark mode</p></div>
+                 <div class="opt-2"><p>light mode</p></div>
+              </div>
+           </div>
+        </div>
+        </div>
+      </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+
+  {% if session.role == "User" %}
+    <div class="side-menu">
+
+      <a href="/image"><span>Image test</span></a>
+      <a href="/clock"><span>Clock drawing test</span></a>
+      <a href="/sage"><span>Sage test</span></a>
+      <a href="/Animal"><span>Animal count test</span></a>
+      <a href="/sudoku"><span>Sudoku solver</span></a>
+      <a href="/brick"><span>CAT</span></a>
+
+      <div style="border-bottom: 2px solid grey; padding-top: 23px;"></div>
+
+    </div>
+  {% elif session.role == "Caretaker" %}
+  <div class="side-menu" style="font-size: 15px;">
+
+    <a href="#"><span>Photo recalling mechanism</span></a>
+    <a href="#"><span>Paired memory words</span></a>
+    <a href="#"><span>Napping timeout</span></a>
+    <a href="/takecare"><span>Medication checklist</span></a>
+
+    <div style="border-bottom: 2px solid grey; padding-top: 23px;"></div>
+
+  </div>
+  {% elif session.role == "Doctor" %}
+  <div class="side-menu">
+
+    <a href="#"><span>ML analysis</span></a>
+
+    <div style="border-bottom: 2px solid grey; padding-top: 23px;"></div>
+
+  </div>
+
+  {% endif %}
+
+  <div class="row">
+    <div class="col-2" id="rem">
+    </div>
+      <div class="QandA col-6">
+          <h1>Post your thoughts here</h1>
+          {{ text }}
+          {{ pageno }}
+        <button id="but" class="open-button" onclick="openForm()">Open Form</button>
+
+        <div class="form-popup" id="myForm">
+          <form  action="/forumins" class="form-container" method="POST" id="usrform">
+            <label for="" style="color: black;">Title: </label>
+            <input type="text" name="title" value="" placeholder="..." required>
+            <label for="" style="color: black;">Body: </label>
+            <textarea rows="4" cols="32" name="comment" form="usrform" style="resize:none;" placeholder="Enter text here..." required></textarea><br>
+            <button type="submit" class="btn">Submit</button>
+            <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+          </form>
+        </div>
+
+      {% for i in query %}
+          <div >
+              {{ i }}
+          </div>
+            <br>
+      {% endfor %}
+
+      </div>
+
+      <div class="chat col-4">
+          <h1>2 of 2</h1>
+      </div>
+  </div>
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+      $(".toggle-switch").on("click", function(event){
+         $("body").toggleClass("dark");
+         $("body").toggleClass("active");
+     });
+    });
+
+    $(window).on('resize', function(){
+      var win = $(this);
+      if (win.width() > 750) {
+        $('#rem').addClass('col-2');
+        $('.QandA').removeClass('col-7');
+        $('.QandA').addClass('col-6');
+        $('.chat').removeClass('col-5');
+        $('.chat').addClass('col-4');
+      }
+
+      else{
+        $('#rem').removeClass('col-1');
+        $('#rem').removeClass('col-2');
+        $('.QandA').removeClass('col-6');
+        $('.QandA').addClass('col-7');
+        $('.chat').removeClass('col-4');
+        $('.chat').addClass('col-5');
+      }
+    });
+
+    function openForm() {
+      document.getElementById("myForm").style.display = "block";
+      document.getElementById("but").style.display = "none";
+    }
+
+    function closeForm() {
+      document.getElementById("myForm").style.display = "none";
+      document.getElementById("but").style.display = "block";
+
+    }
+
+</script>
+
+
+  </body>
+</html>
+
+Name(user details)
+subject
+content
+array(comments or answers)
+date time
+
+
+#

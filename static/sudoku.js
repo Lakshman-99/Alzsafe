@@ -4,10 +4,10 @@ var game = {
 		{ maxNum : 9, empty: false },
 	nums : "123456789", maxNum : 9,
 	numCount : 81, boxLen : 3,
-	solvedCount : 0, 
+	solvedCount : 0,
 	board : []
 }
-	
+
 function possibleNums(board, id, not){
 	var id = id.split(","), bLen = game.boxLen, not = ((not === undefined)? "" : not ), ans = "", nums = game.nums, data = game.boxData, id0ModBL = (id[0] % game.boxLen), id1ModBL = (id[1] % game.boxLen);
 	for(var i=1; i<=game.maxNum; i++){
@@ -35,7 +35,7 @@ function possibleNums(board, id, not){
 			break;
 		}
 	}
-	
+
 	for(var i in nums){
 		if(not.indexOf(nums[i]) < 0){
 			ans+=(nums[i])
@@ -65,7 +65,7 @@ function numToId(num){
 			if(count == num){
 				return (x+","+y);
 			}
-		}	
+		}
 	}
 }
 //returns the number located at a specified id
@@ -170,7 +170,7 @@ function formatBoard(board_){
 				data[val][d] = "";
 			}
 		}
-		
+
 		i++;
 	}
 	return board;
@@ -223,7 +223,7 @@ function initialize(board){
 		}
 	}
 };
-	
+
 function solve(board){
 	var empty = getEmptyCells(board), possi = [], error = false;
 	for(var i in empty){
@@ -251,7 +251,7 @@ function solve(board){
 		p++;
 	}
 	return({ board : board, moves: p, error: error});
-	
+
 	function randIndex(from){
 		return ((from == "")? NaN : from[Math.floor(Math.random() *from.length)]);
 	}
@@ -261,7 +261,7 @@ function sort(arr, data){
 	var type = String(data.sortType).trim().toLowerCase();
 	var deep = (deep == true)? true : false ;
 	function which(x){
-		return ((data.sortType.indexOf("len") == 0)? String(x).length : Number(x));	
+		return ((data.sortType.indexOf("len") == 0)? String(x).length : Number(x));
 	}
 	var sorted = false;
 	while(!sorted){
@@ -433,7 +433,7 @@ function changeSudokuDisplay(num){
 		$(".sudoku .row .cell").last().css({"left":left, "width":(314/num)+"px"});
 		}
 	}
-	
+
 	$(".sudoku .row .cell").on("click.edit", function(e){ handleEdit(e, this); });
 }
 
@@ -442,18 +442,18 @@ $(".sudoku .row .cell").on("dblclick.edit", function(){ $(this).text("") });
 function handleEdit(e, curr){
 	$(".sudoku .row .cell").css({"background-color":"silver"});
 	$(curr).css({"background-color":"grey"});
-	if($(curr).attr("editable") == "false" && game.solvedCount > 1){	
-		$(".numbers").animate({"top":"275px"},100);
-		return;	
+	if($(curr).attr("editable") == "false" && game.solvedCount > 1){
+		$(".numbers").animate({"top":"-30px"},100);
+		return;
 	}
 	$(".numbers .cell").off("click.change");
 	$(".sudoku .row .cell").off("click.delete");
-	$(".numbers").animate({"top":"322px"},100);
+	$(".numbers").animate({"top":"25px"},100);
 	changeNum(e);
 	$(curr).one("click.delete", function(){
 		$(this).text("").css("background-color","silver");
 		$(".numbers .cell").off("click.change");
-		$(".numbers").animate({"top":"275px"},100);
+		$(".numbers").animate({"top":"-30px"},100);
 		$(this).off("click.delete");
 		colorWrongCells();
 	});
@@ -464,7 +464,7 @@ function handleEdit(e, curr){
 			return;
 		}
 		if(!($(t).hasClass("cell") && $(t).parent().hasClass("row"))){
-			$(".numbers").animate({"top":"275px"},100);
+			$(".numbers").animate({"top":"-30px"},100);
 		}
 		$(this).css({"background-color":"silver"});
 	});
@@ -472,7 +472,7 @@ function handleEdit(e, curr){
 
 function changeNum(boardE){
 	$(".numbers .cell").one("click.change", function(numE){
-		$(".numbers").animate({"top":"275px"},100);
+		$(".numbers").animate({"top":"-30px"},100);
 		var curr = $(boardE.target);
 		$(boardE.target).off("click.delete");
 		var index = Number($(".sudoku .cell").index(curr))+1;

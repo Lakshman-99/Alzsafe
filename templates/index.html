@@ -1,198 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-	<meta charset="UTF-8">
-	<title>Alzsafe</title>
+  <meta charset="utf-8">
+  <title>Alzsafe</title>
+  <!-- broweser bar icon -->
+  <link rel="icon" href="{{url_for('static',filename='bar.png')}}" type="image/gif">
+  <!-- fontawesome for icons -->
+  <script src="https://kit.fontawesome.com/72212fbbc6.js" crossorigin="anonymous"></script>
 
-	<style>
-                @import url('https://fonts.googleapis.com/css?family=Roboto:700&display=swap');
-        *{
-            padding: 0;
-            margin: 0;
-        }
+  <!-- google fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+  <!-- CSS stylesheets -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}">
+  <!-- script for Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 
-body {
-	font-family: Arial;
-	font-size: 50px;
-    background: url(../static/bg.jpeg);
-    repeat:no-repeat;
-    background-size: cover;
-}
-        .wrapper{
-            background: url(/static/bg.jpeg) no-repeat;
-            background-size: cover;
-            height: 100vh;
-        }
-        .navbar{
-            position: fixed;
-            height: 80px;
-            width: 100%;
-            top: 0;
-            left: 0;
-            background: rgba(0,0,0,0.4);
-        }
-        .navbar .logo{
-            width: 60px;
-            height: auto;
-            padding: 20px 100px;
-        }
-        .navbar ul{
-            float: right;
-            margin-right: 20px;
-        }
-        .navbar ul li{
-            list-style: none;
-            margin: 0 8px;
-            display: inline-block;
-            line-height: 80px;
-        }
-        .navbar ul li a{
-            font-size: 20px;
-            font-family: 'Roboto', sans-serif;
-            color: black;
-            padding: 6px 13px;
-            text-decoration: none;
-            transition: .4s;
-        }
-        .navbar ul li a.active,
-        .navbar ul li a:hover{
-            background: red;
-            border-radius: 2px;
-        }
-        .wrapper .center{
-            position: absolute;
-            left: 50%;
-            top: 55%;
-            transform: translate(-50%, -50%);
-            font-family: sans-serif;
-            user-select: none;
-        }
-        .center h1{
-            color: white;
-            font-size: 70px;
-            width: 900px;
-            font-weight: bold;
-            text-align: center;
-        }
-        .center h2{
-            color: black;
-            font-size: 50px;
-            font-weight: bold;
-            margin-top: 10px;
-            width: 885px;
-            text-align: center;
-        }
-        .center .buttons{
-            margin: 35px 280px;
-        }
-        .buttons button{
-            height: 50px;
-            width: 150px;
-            font-size: 18px;
-            font-weight: 600;
-            color: #ffb3b3;
-            background: red;
-            outline: none;
-            cursor: pointer;
-            border: 1px solid #cc0000;
-            border-radius: 25px;
-            transition: .4s;
-        }
-        .buttons .btn2{
-            margin-left: 25px;
-        }
-        .buttons button:hover{
-            background: #cc0000;
-        }
-
-#container {
-	margin: 50px 0 0 0;
-	text-align: center;
-}
-
-#text {
-	display: inline-block;
-	color: white;
-	border-right: 3px solid white;
-}
-    </style>
 </head>
+
 <body>
 
-	<div class="wrapper">
-			<nav class="navbar">
-				<ul>
-					<li><a class="active" href="/forum/page1">Home</a></li>
-					<li><a href="/results">Analysis</a></li>
-				</ul>
-			</nav>
+  <section id="title" class="colored-section">
+    <div class="container-fluid">
 
-			<div class="center">
-                <h1>Alzsafe</h1>
-<div id="container">
-	<div id="text"></div>
-</div>
 
-<script type="text/javascript">
+      <nav class="navbar  navbar-expand-lg navbar-dark">
+        <a class="navbar-brand mk" href="/"><img src="{{url_for('static',filename='logo.png')}}"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto">
 
-// List of sentences
-var _CONTENT = [ "VIRTUAL AID", "ASSISTIVE CARE", "CONTROL TOOL"];
+            <li class="nav-item">
+              <a class="nav-link"style="color: black;" href="/forum/page1">Forum</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" style="color: black;" href="/results">Model</a>
+            </li>
+            {% if session.role != None %}
+            <li class="nav-item">
+              <a class="nav-link" style="color: black;" href="/logout">Logout</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
 
-// Current sentence being processed
-var _PART = 0;
+      <div class="row">
+        <div class="col-lg-6">
+          <h1 class="Big-heading">One place to Test and Treat your Alzheimer's</h1>
+          <button type="button" class="btn btn-light btn-lg download-btn" onclick="window.location.href='/image'"><img src="{{url_for('static',filename='ts.png')}}" style="width:50px;"> Take Test</button>
+        </div>
+        <div class="col-lg-6 ">
+          <img class="title-image" src="{{url_for('static',filename='doc.png')}}" alt="iphone-mockup">
+          <img class="title-image2" src="{{url_for('static',filename='doc2.png')}}" alt="iphone-mockup">
+        </div>
+      </div>
 
-// Character number of the current sentence being processed
-var _PART_INDEX = 0;
+    </div>
+  </section>
 
-// Holds the handle returned from setInterval
-var _INTERVAL_VAL;
 
-// Element that holds the text
-var _ELEMENT = document.querySelector("#text");
+  <!-- Features -->
+  <section id="features" class="white-section">
+    <div class="container-fluid">
+    <div class="row">
+      <div class="feature-box col-lg-4">
+        <i class="icon fas fa-check-circle fa-4x"></i>
+        <h3 class="feature-title">Easy to use.</h3>
+        <p>Access with full ease</p>
+      </div>
 
-// Implements typing effect
-function Type() {
-	var text =  _CONTENT[_PART].substring(0, _PART_INDEX + 1);
-	_ELEMENT.innerHTML = text;
-	_PART_INDEX++;
+      <div class="feature-box col-lg-4">
+        <i class="icon fas fa-bullseye fa-4x"></i>
+        <h3 class="feature-title">Elite Clientele</h3>
+        <p>We have all the dogs, the greatest dogs.</p>
+      </div>
+      <div class="feature-box col-lg-4">
+        <i class="icon fas fa-heart fa-4x"></i>
+        <h3 class="feature-title">Guaranteed to work.</h3>
+        <p>Find the love of your dog's life or your money back.</p>
+      </div>
+    </div>
+    </div>
+    </section>
 
-	// If full sentence has been displayed then start to delete the sentence after some time
-	if(text === _CONTENT[_PART]) {
-		clearInterval(_INTERVAL_VAL);
-		setTimeout(function() {
-			_INTERVAL_VAL = setInterval(Delete, 50);
-		}, 1000);
-	}
-}
+  <!-- Testimonials -->
 
-// Implements deleting effect
-function Delete() {
-	var text =  _CONTENT[_PART].substring(0, _PART_INDEX - 1);
-	_ELEMENT.innerHTML = text;
-	_PART_INDEX--;
+  <section id="testimonials" class="colored-section">
+    <div id="testimonial-carousel" class="carousel slide" data-ride="false">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <h2 class="testimonial-text">We believe communicating effectively with someone with Alzheimer’s is not just about using language, it is connecting through their senses such as touch, visual cues and sound</h2>
+          <img class="testimonial-image" src="{{url_for('static',filename='pro1.jpeg')}}" alt="dog-profile">
+          <em>Peter Ross, CEO & co-founder of Senior Helpers</em>
+        </div>
+        <div class="carousel-item">
+          <h2 class="testimonial-text">“Release in your mind who your loved one used to be and accept who they are today.”</h2>
+          <img class="testimonial-image" src="{{url_for('static',filename='pro2.jepg')}}" alt="lady-profile">
+          <em>J. Rusnak, PhD</em>
+        </div>
+      </div>
 
-	// If sentence has been deleted then start to display the next sentence
-	if(text === '') {
-		clearInterval(_INTERVAL_VAL);
+      <a class="carousel-control-prev" role="button" href="#testimonial-carousel" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </a>
+      <a class="carousel-control-next" role="button" href="#testimonial-carousel" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </a>
+    </div>
 
-		// If last sentence then display the first one, else move to the next
-		if(_PART == (_CONTENT.length - 1))
-			_PART = 0;
-		else
-			_PART++;
-		_PART_INDEX = 0;
 
-		// Start to display the next sentence after some time
-		setTimeout(function() {
-			_INTERVAL_VAL = setInterval(Type, 100);
-		}, 200);
-	}
-}
 
-// Start the typing effect on load
-_INTERVAL_VAL = setInterval(Type, 100);
 
-</script>
-		</div>
+
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="white-section">
+    <div class="container-fluid">
+    <div class="row">
+      <div class="feature-box col-lg-4">
+        <img src="{{url_for('static',filename='abt.png')}}" style="width: 400px;position: relative;left: -233px;top: 51px;">
+
+      </div>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisl dui, auctor ac accumsan nec, tempus eget magna. Donec at interdum dui. Cras et tristique ex. Vestibulum rutrum ligula et condimentum posuere. Aenean nisi nisl, lobortis sit amet gravida eu, lobortis nec libero. Donec euismod nibh nec arcu vestibulum suscipit. Aliquam erat volutpat. In id molestie ipsum.
+
+        Pellentesque molestie ligula at vestibulum blandit. Donec risus turpis, iaculis ut felis sed, bibendum finibus massa. Praesent tempus vestibulum mauris, et suscipit ex dictum vitae. Ut eget dictum purus. Etiam efficitur aliquam vestibulum. Vestibulum pellentesque luctus ultricies. Vestibulum viverra enim semper erat pretium efficitur. Maecenas pulvinar dolor a dignissim tempus. In hendrerit porttitor sapien a ullamcorper.
+        </p>
+
+    </div>
+    </div>
+    </section>
+
+
+
+
+  <!-- Call to Action -->
+  <section id="cta" class="colored-section">
+   <div class="container-fluid">
+   <h3 class="Big-heading">Join our community <br> help Yourself</h3>
+   <button type="button" class="btn btn-dark btn-lg download-btn" onclick="window.location.href='/login'"><i class="fab fa-login"></i> Login</button>
+   <button type="button" class="btn btn-lg btn-light download-btn" onclick="window.location.href='/signup'"><i class="fab fa-signup"></i> SignUp</button>
+   </div>
+  </section>
+
+
+  <center>
+    <footer id="footer" class="white-section">
+      <p>© Copyright 2022 Alzsafe</p>
+    </footer>
+  </center>
 </body>
+
 </html>

@@ -2,7 +2,7 @@
 
 /* #212222; */
 :root {
-  --background: #b5ffd9;
+  --background: #E9CFD0;
   --chat: #FFFFFF;
   --navbar: #101130;
   --text: #FFF;
@@ -19,6 +19,7 @@ html{
 
 body {
   background: var(--background);
+  overflow: hidden;
   transition: 0.5s background ease;
 }
 
@@ -289,7 +290,6 @@ nav .menu-bar {
 }
 
 .QandA{
-    background-color: white;
   height: 100vh;
 }
 
@@ -345,8 +345,4 @@ background-color: red;
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
 opacity: 1;
-}
-
-#lb{
-  color:black;
 }

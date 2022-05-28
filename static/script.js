@@ -66,7 +66,8 @@ function check(){
   var hr = date.getHours();
   var min = date.getMinutes();
   var sec = date.getSeconds();
-
+  var btn = document.getElementById("btn");
+  var inp = document.getElementById("ans");
     var time1 = document.getElementById("time").value;
     var time2 = document.getElementById("time2").value;
     if(hr > 12){
@@ -75,13 +76,17 @@ function check(){
     console.log(hr+"  " + min +"  "+time1+ "  "+ time2);
     if(time1 != hr){
       document.getElementById("comment").innerText = "Incorrect Time!";
+      inp.value = 0;
     }
     else if(time2 != min && time2 != min-1 && time2 != min+1){
       document.getElementById("comment").innerText = "Incorrect Time!";
+      inp.value = 0;
     }
     else {
       document.getElementById("comment").innerText = "Correct Time!";
+      inp.value = 1;
     }
+    btn.click();
     console.log(time);
 };
 

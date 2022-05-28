@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for,request, redirect, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-import datetime
+import datetime, random, time, flask
 import math, random, base64, smtplib
 from datetime import date
 from SageQuestion import Quiz
@@ -11,7 +11,7 @@ from paddle import Paddle
 from ball import Ball
 from brick import Brick
 from point import Point
-import random, time
+from urllib.request import urlopen
 
 
 app = Flask(__name__)
@@ -23,6 +23,7 @@ db = client['Alzsafe']
 collog = db['Credentials']
 colform = db['Forum']
 colimg = db['Image']
+
 
 def runapp():
     color=["red", "orange", "yellow", "green", "blue", "purple"]
@@ -71,8 +72,8 @@ def runapp():
                 brick.kill()
                 point.addpoint()
 
-
     screen.exitonclick()
+    return point.point
 
 def getsize():
     queries = colform.find()
@@ -90,6 +91,8 @@ def getsize():
 
 @app.route("/",methods=['GET', "POST"])
 def index():
+    session['role'] = None
+    session['Username'] = None
     return render_template("index.html")
 
 @app.route("/results",methods=['GET', "POST"])
@@ -149,7 +152,12 @@ def login():
         print(detail)
         if(detail != None):
             session['Username']=email
-            return redirect('/forum/page1')
+            session['role']=detail['role']
+            if(session['role'] == "User"):
+                session['score'] = "0"
+                return redirect('/image')
+            else:
+                return redirect('/takecare')
         else:
             return "Incorrect Credentials!"
 
@@ -160,41 +168,62 @@ def signup():
     if(request.method=="POST"):
         name= request.form.get("name")
         email=request.form.get("email")
+        role=request.form.get("role")
         passw=request.form.get("pass")
         cpass=request.form.get("cpass")
         if(passw==cpass):
-            x=collog.insert_one({"name": name, "email": email, "pass": passw})
+            x=collog.insert_one({"name": name, "email": email, "role": role, "pass": passw, "photo": []})
         if(x):
             return render_template("login.html")
     return render_template("signup.html")
 
+@app.route("/logout",methods=['GET','POST'])
+def logout():
+    session['role']=None
+    return redirect('/')
+
 @app.route("/image",methods=['GET', "POST"])
 def image():
-    if(request.method=="POST"):
-        check = "No, That's Incorrect!"
-        name = request.form.get("name")
-        hidd = request.form.get("hidd")
-        print(name, hidd)
-        if(hidd.lower() == name.lower()):
-            check = "That's correct!! "
-        return render_template("image.html", check = check, name = hidd)
+    if(session['Username']):
+        word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
+        response = urlopen(word_site)
+        txt = response.read()
+        WORDS = txt.splitlines()
+        word1 = (random.choice(WORDS).decode('utf-8'))
+        word2 = (random.choice(WORDS).decode('utf-8'))
+        session['w1'] = word1
+        session['w2'] = word2
 
-    vals = colimg.find()
-    print(vals)
-    val=[]
-    for i in vals:
-        val.append(i)
+        if(request.method=="POST"):
+            check = "No, That's Incorrect!"
+            name = request.form.get("name")
+            hidd = request.form.get("hidd")
+            print(name, hidd)
+            if(hidd.lower() == name.lower()):
+                check = "That's correct!!"
+                session['score'] = str(int(session['score']) + 5)
+            #return render_template("image.html", check = check, name = hidd)
+            return redirect('/clock')
 
-    cur = random.choice(val)
-    cur=list(cur.values())
-    imgdata = base64.b64decode(cur[1])
-    filename = 'static/img.jpg'
-    with open(filename, 'wb') as f:
-        f.write(imgdata)
-    return render_template("image.html", name=cur[2], check = "null")
+        vals = colimg.find()
+        print(vals)
+        val=[]
+        for i in vals:
+            val.append(i)
+
+        cur = random.choice(val)
+        cur=list(cur.values())
+        imgdata = base64.b64decode(cur[1])
+        filename = 'static/img.jpg'
+        with open(filename, 'wb') as f:
+            f.write(imgdata)
+        return render_template("image.html", name=cur[2], check = "null", w1 = word1, w2 = word2)
+    else:
+        return redirect('/login')
 
 @app.route('/sage',methods=['GET','POST'])
 def selftest():
+    if(session['Username']):
         if(request.method=="GET"):
             SAGE=Quiz()
             return render_template('sage.html',questions=SAGE.getQuestions())
@@ -216,78 +245,159 @@ def selftest():
             for Question in TotalQuestion:
                 Question['ans']  = Answer[i]
                 i= i + 1
-            return str(TotalQuestion)
-
-
-@app.route('/getSage',methods=['POST','GET'])
-def getSage():
-    if (request.method == "GET"):
-        return render_template("InputSage.html")
-
+            #return str(TotalQuestion)
+            session['sage'] = str(TotalQuestion)
+            return redirect("/brick")
     else:
-        today = date.today()
-        d1 = today.strftime("%d-%m-%Y")
-        d = {}
+        return redirect('/login')
 
-        if(d1 == request.form.get("date")):
-            d["date"] = "YES"
-        else:
-            d["date"] = "No"
-        d["Name"] = request.form.get("Name")
-        d["DOB"] = request.form.get("DOB")
-        d["school"] = request.form.get("school")
-        d["gender"] = request.form.get("gender")
-        d["Type"] = request.form.get("Type")
-        print(d)
 
 @app.route('/clock',methods=['POST','GET'])
 def clock():
-    return render_template("clock.html")
+    if(session['Username']):
+        if(request.method == "POST"):
+            ans = request.form.get("ans")
+            if(ans == 1):
+                session['score'] = str(int(session['score']) + 5)
+
+        #return render_template("clock.html")
+        return redirect('/Animal')
+    else:
+        return redirect('/login')
 
 @app.route('/Animal',methods=['POST','GET'])
 def Animal():
-    if (request.method == "POST"):
-        txt = open("Ani.txt", "r")
-        AllAnimal = txt.readlines()
-        for i in range(0, len(AllAnimal)):
-            AllAnimal[i] = AllAnimal[i].replace("\n", "").lower()
-        data = request.form.get("data")
-        data = data.split(" ")
-        data = [val.lower().strip() for val in data]
-        mylist = data
-        mylist = list(dict.fromkeys(mylist))
-        print(mylist)
-        if(len(mylist) == 5):
-            i = 0
-            for animal in mylist:
-                if(animal in AllAnimal):
-                    i = i + 1
+    if(session['Username']):
+        if (request.method == "POST"):
+            txt = open("Ani.txt", "r")
+            AllAnimal = txt.readlines()
+            for i in range(0, len(AllAnimal)):
+                AllAnimal[i] = AllAnimal[i].replace("\n", "").lower()
+            d1 = request.form.get("Q1")
+            d2 = request.form.get("Q2")
+            d3 = request.form.get("Q3")
+            d4 = request.form.get("Q4")
+            d5 = request.form.get("Q5")
+            mylist = [d1,d2,d3,d4,d5]
+            print(mylist)
+            if(len(mylist) == 5):
+                i = 0
+                for animal in mylist:
+                    if(animal in AllAnimal):
+                        i = i + 1
+                session['score'] = str(int(session['score']) + i)
+                if(i == 5):
+                    #return "Correct Answer"
+                    return redirect('/sage')
 
-            if(i == 5):
-                # Add to the Database
-
-                return "Correct Answer"
-
+                else:
+                    #return "Wrong Answer"
+                    return redirect('/sage')
             else:
-                return "Wrong Answer"
-        else:
-            return "No Duplicate"
+                #return "No Duplicate"
+                return redirect('/sage')
 
-    return render_template("Animal.html")
+        return render_template("Animal.html")
+    else:
+        return redirect('/login')
 
 @app.route('/brick',methods=['GET','POST'])
 def brick():
-    try:
-        runapp()
-    except:
-        print("")
+    if(session['Username']):
+        try:
+            s = runapp()
+            session['score'] = str(int(session['score']) + s)
+        except:
+            print("")
 
-    pg = session['page']
-    return redirect(f"/forum/{pg}")
+        #return redirect(f"/forum/{pg}")
+        return redirect('sudoku')
+    else:
+        return redirect('/login')
 
 @app.route('/sudoku',methods=['GET','POST'])
 def sudoku():
-    return render_template("sudoku.html")
+    if(session['Username']):
+        return render_template("sudoku.html")
+    else:
+        return redirect('/login')
+
+@app.route('/photorecall', methods=['Get','POST'])
+def photorecall():
+    uname = session['Username']
+    detail = collog.find_one({"email": uname})["photo"]
+    print(detail)
+    return render_template("photorecall.html")
+
+def getAllUsers():
+    queries = collog.find()
+    list=[]
+    for i in queries:
+        lis=[]
+
+        try:
+            lis.append(i['_id'])
+            lis.append(i['email'])
+            lis.append(i['name'])
+
+            if(i.get("takecare")== None):
+                pass
+            else:
+                lis.append(i['takecare'])
+
+            list.append(lis)
+        except:
+            pass
+
+    print(list)
+    return list
+
+@app.route('/takecare',methods=['GET','POST'])
+def Takecare():
+    Users = getAllUsers()
+    return flask.render_template("careTakerAll.html",Users = Users)
+
+
+@app.route('/PersonalTakeCare/<id>',methods=['GET','POST'])
+def personalTakecare(id):
+
+    Id = id
+    objInstance = ObjectId(id)
+    patient = collog.find_one({"_id": objInstance})
+
+    if(patient.get('takecare') == None):
+        return flask.render_template("personalCareTaker.html",patient = patient)
+    else:
+        print(patient)
+        return flask.render_template("personalView.html",id = patient['_id'] ,name = patient['name'],patient = patient['takecare'])
+
+@app.route('/submitPatient/<id>',methods=['GET','POST'])
+def SUBMIT(id):
+
+    dit = {"M":{
+        "Medications":request.form.get("MM"),
+        "Dosage":request.form.get("MD"),
+        "Time":request.form.get("MT")
+    },"A":{
+        "Medications":request.form.get("AM"),
+        "Dosage": request.form.get("AD"),
+        "Time":request.form.get("AT")
+    },"N":{
+        "Medications":request.form.get("NM"),
+        "Dosage": request.form.get("ND"),
+        "Time":request.form.get("NT")
+    }
+    }
+    Id = id
+    objInstance = ObjectId(id)
+    collog.update_one({"_id": objInstance},{"$set" : {"takecare":dit}})
+
+    patient = collog.find_one({"_id": objInstance})
+    return flask.render_template("personalView.html",id = patient['_id'], name=patient['name'], patient=patient['takecare'])
+
+@app.route('/final',methods=['GET','POST'])
+def final():
+    return render_template("final.html")
 
 if __name__ == "__main__":
     app.run()

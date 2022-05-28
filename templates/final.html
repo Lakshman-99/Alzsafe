@@ -30,36 +30,13 @@
           </ul>
         </div>
       </nav>
+    <br>
 
-      <div class="row">
-        <div class="col-2" id="rem">
-        </div>
-          <div class="QandA col-6">
-              <h1>Post your thoughts here</h1>
-              {{ text }}
-              {{ pageno }}
-            <button id="but" class="open-button" onclick="openForm()">Open Form</button>
+    <center>
+    <h3>Your score is {{session.score}}</h3>
+    <h4>{{ session.sage }}</h4>
 
-            <div class="form-popup" id="myForm">
-              <form  action="/forumins" class="form-container" method="POST" id="usrform">
-                <label for="" style="color: black;">Title: </label>
-                <input type="text" name="title" value="" placeholder="..." required>
-                <label for="" style="color: black;">Body: </label>
-                <textarea rows="4" cols="32" name="comment" form="usrform" style="resize:none;" placeholder="Enter text here..." required></textarea><br>
-                <button type="submit" class="btn">Submit</button>
-                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
-              </form>
-            </div>
+    <h1> Your test is completed successfully. We have got your score, kindly consult physician for further treatment investigation.</h1>
+    </center>
 
-          {% for i in query %}
-              <div >
-                  {{ i }}
-              </div>
-                <br>
-          {% endfor %}
-
-          </div>
-
-
-  </body>
 </html>
